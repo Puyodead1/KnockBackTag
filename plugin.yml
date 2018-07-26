@@ -2,7 +2,7 @@ name: KnockBackTag
 main: me.puyodead1.KBT.KnockBackTag
 version: 1.0
 author: Puyodead1
-description: TBA
+description: Custom Tag Minigame
 commands:
   mg-kbt:
     description: OP Base Command

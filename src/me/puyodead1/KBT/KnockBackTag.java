@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.puyodead1.KBT.AdvancedLicense.LogType;
 import me.puyodead1.KBT.Commands.ArenaCoords;
 import me.puyodead1.KBT.Game.Game;
 import me.puyodead1.KBT.Utils.Events;
@@ -27,6 +28,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	private static ArrayList<String> help;
 	private static KnockBackTag instance;
 	private Random r = new Random();
+	private LogType logType = LogType.NORMAL;
 
 	public KnockBackTag() {
 		instance = this;
@@ -35,9 +37,17 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	public static KnockBackTag getInstance() {
 		return instance;
 	}
+	private void log(int type, String message){
+		if(logType == LogType.NONE || ( logType == LogType.LOW && type == 0 )) return;
+		System.out.println(message);
+	}
 
 	@Override
 	public void onEnable() {
+		if (!new AdvancedLicense(getConfig().getString("LicenseKey"), "http://licenceserverpuyodead1.000webhostapp.com/verify.php", this)
+				.setSecurityKey("YecoF0I6M05thxLeokoHuW8iUhTdIUInjkfF").register()) {
+			return;
+		}
 
 		File userdatadir = new File(getDataFolder() + File.separator + "userdata");
 		if (!userdatadir.exists()) {
@@ -130,8 +140,8 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 						Bukkit.getServer().broadcastMessage(Utils.ChatColor("&c&l" + player.getName()
 								+ " &e&lhas bailed out. &6&l" + newIT + " &eis now IT. Run Away!!"));
 					} else {
-						Bukkit.getServer().broadcastMessage(Utils.ChatColor(
-								"&cThe last Tag player has left, There is nobody else playing Tag!"));
+						Bukkit.getServer().broadcastMessage(
+								Utils.ChatColor("&cThe last Tag player has left, There is nobody else playing Tag!"));
 
 					}
 					if (!getConfig().getBoolean("ExitLocationSet")) {
@@ -150,7 +160,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-						
+
 						}
 						// Standard leave process
 						Location exitLocation = new Location(
