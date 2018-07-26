@@ -1,0 +1,14 @@
+name: KnockBackTag
+main: me.puyodead1.KBT.KnockBackTag
+version: 1.0
+author: Puyodead1
+description: TBA
+commands:
+  mg-kbt:
+    description: OP Base Command
+  EnterGame: 
+    description: Enter the Arena
+  Leave:
+    description: Leave the Arena
+  ExitCoordinate:
+    description: Set the Exit Location
