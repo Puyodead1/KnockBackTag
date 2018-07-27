@@ -1,4 +1,6 @@
-# KnockBackTag-Minigame
+# KnockBackTag-Minigame Version 1 Beta 1
+
+###This is a BETA, it is not production ready, it is for the purpose of testing!
 
 Compiled for Spigot 1.12.2
 

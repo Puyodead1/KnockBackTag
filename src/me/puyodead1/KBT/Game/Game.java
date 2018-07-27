@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import me.puyodead1.KBT.KnockBackTag;
 import me.puyodead1.KBT.Utils.Utils;
@@ -21,8 +22,10 @@ public class Game {
 	public static ArrayList<Player> players = new ArrayList<Player>();
 	public static Player isIT;
 	public static int KBTStat2 = 0;
+	public static BukkitTask KBTStat2Runnable;
 
-	private static ItemStack NetherStar() {
+
+	public static ItemStack NetherStar() {
 		ItemStack item = new ItemStack(Material.NETHER_STAR);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(Utils.ChatColor("&7Leave Game &7(Right Click)"));
@@ -31,7 +34,7 @@ public class Game {
 		return item;
 	}
 
-	private static ItemStack KnockBackStick() {
+	public static ItemStack KnockBackStick() {
 		ItemStack item = new ItemStack(Material.STICK);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(Utils.ChatColor("&6Knock Back Stick"));
@@ -57,15 +60,45 @@ public class Game {
 		}
 	}
 
+	public static void KBTStat1(Player player) {
+		//Number of games Played
+	}
+
 	public static void KBTStat2(Player player) {
-		
+		File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator + "userdata"
+				+ File.separator + player.getUniqueId().toString() + ".yml");
+		FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
+		//Cumulative number of minutes being IT
+		KBTStat2Runnable = new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				userconfig.set("Stats.KBTStat2", userconfig.getInt("Stats.KBTStat2") + 1);
+				try {
+					userconfig.save(userdata);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
+					player.sendMessage("KBTStat2 + 1");
+				}
+			}
+		}.runTaskTimerAsynchronously(KnockBackTag.getInstance(), 1200, 1200);
+	}
+
+	public static void KBTStat3(Player player) {
+		//Cumulative number of minutes has not been IT
+	}
+
+	public static void KBTStat4(Player player) {
+		//Number of times player leaves game while being IT
 	}
 
 	public static void gameInit(Player player) {
 		File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator + "userdata"
 				+ File.separator + player.getUniqueId().toString() + ".yml");
 		FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
-
 		userconfig.set("Inventory", player.getInventory().getContents());
 		try {
 			userconfig.save(userdata);

@@ -48,23 +48,25 @@ public class AdvancedLicense {
 			Bukkit.getScheduler().cancelTasks(plugin);
 			Bukkit.getPluginManager().disablePlugin(plugin);
 			return false;
-		}
-		log(0, "[]==========[License-System]==========[]");
-		log(0, "Connecting to License-Server...");
-		ValidationType vt = isValid();
-		if (vt == ValidationType.VALID) {
-			log(1, "License valid!");
-			log(0, "[]==========[License-System]==========[]");
-			return true;
 		} else {
-			log(1, "License is NOT valid!");
-			log(1, "Failed as a result of " + vt.toString());
-			log(1, "Disabling plugin!");
-			log(0, "[]==========[License-System]==========[]");
 
-			Bukkit.getScheduler().cancelTasks(plugin);
-			Bukkit.getPluginManager().disablePlugin(plugin);
-			return false;
+			log(0, "[]==========[License-System]==========[]");
+			log(0, "Connecting to License-Server...");
+			ValidationType vt = isValid();
+			if (vt == ValidationType.VALID) {
+				log(1, "License valid!");
+				log(0, "[]==========[License-System]==========[]");
+				return true;
+			} else {
+				log(1, "License is NOT valid!");
+				log(1, "Failed as a result of " + vt.toString());
+				log(1, "Disabling plugin!");
+				log(0, "[]==========[License-System]==========[]");
+
+				Bukkit.getScheduler().cancelTasks(plugin);
+				Bukkit.getPluginManager().disablePlugin(plugin);
+				return false;
+			}
 		}
 	}
 
