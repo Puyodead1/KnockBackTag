@@ -142,10 +142,12 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 						if (onlinePlayers.contains(args[1])) {
 							Player p1 = Bukkit.getServer().getPlayer(args[1]);
 							EnterGame(p1);
-							sender.sendMessage(Utils.ChatColor("&eYou have forced &e&l" + args[1] + " &eto join the game!"));
+							sender.sendMessage(
+									Utils.ChatColor("&eYou have forced &e&l" + args[1] + " &eto join the game!"));
 							return true;
 						} else {
-							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1] + " &c is either not a valid player or is not online!"));
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1]
+									+ " &c is either not a valid player or is not online!"));
 							return true;
 						}
 					}
@@ -158,12 +160,14 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 							Player p1 = Bukkit.getServer().getPlayer(args[1]);
 							if (Game.players.contains(p1)) {
 								LeaveGame(p1);
-								sender.sendMessage(Utils.ChatColor("&eYou have kicked &e&l" + p1.getName() + " &efrom the game!"));
+								sender.sendMessage(
+										Utils.ChatColor("&eYou have kicked &e&l" + p1.getName() + " &efrom the game!"));
 								return true;
 							}
 							return true;
 						} else {
-							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1] + " &c is either not online or is not a valid player!"));
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1]
+									+ " &c is either not online or is not a valid player!"));
 							return true;
 						}
 					}
@@ -185,18 +189,21 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 									Game.isIT.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
 									Game.isIT.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
 									Game.isIT.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
-									
-									for(Player players : Game.players) {
-										players.sendMessage(Utils.ChatColor("&7***&e" + Game.isIT.getName() + " is IT! Avoid Them!&7***"));
+
+									for (Player players : Game.players) {
+										players.sendMessage(Utils.ChatColor(
+												"&7***&e" + Game.isIT.getName() + " is IT! Avoid Them!&7***"));
 									}
-									
+
 								}
 							} else {
-								sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + p1.getName() + " &c is not playing Tag!"));
+								sender.sendMessage(Utils
+										.ChatColor("&7[&cERROR&7] &7&l" + p1.getName() + " &c is not playing Tag!"));
 								return true;
 							}
 						} else {
-							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1] + " &c is either not a valid player or is not online!"));
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1]
+									+ " &c is either not a valid player or is not online!"));
 							return true;
 						}
 					} else {
@@ -256,49 +263,49 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	}
 
 	public static void LeaveGame(Player player) {
-		if (Game.players.contains(player)) {
-			Game.players.remove(player);
-			player.sendMessage(Utils.ChatColor("&eYou have left the game!"));
-			if (Game.players.size() != 0) {
-				Random rand = new Random();
-				Player newIT = Game.players.get(rand.nextInt(Game.players.size()));
+		if (!KnockBackTag.getInstance().getConfig().getBoolean("ExitLocationSet")) {
+			player.sendMessage(Utils.ChatColor("&7[&cERROR&7] &cThe ExitLocation has not been set!"));
+		} else {
+			if (Game.players.contains(player)) { // Check if player is in the game
+				Game.players.remove(player); // Remove player from the game
+				player.sendMessage(Utils.ChatColor("&eYou have left the game!"));
 
+				// We need to check if the player that quit is IT
 				if (Game.isIT == player) {
-					Game.isIT = newIT;
-					Bukkit.getServer().broadcastMessage(Utils.ChatColor("&c&l" + player.getName()
-							+ " &e&lhas bailed out. &6&l" + newIT.getName() + " &eis now IT. Run Away!!"));
-				} else {
-					Bukkit.getServer().broadcastMessage(
-							Utils.ChatColor("&c" + player.getName() + " &eis no longer playing tag!"));
-				}
-			} else {
-				Bukkit.getServer().broadcastMessage(
-						Utils.ChatColor("&cThe last Tag player has left, There is nobody else playing Tag!"));
+					if (Game.players.size() > 0) { // If there are more then 0 players, get a new IT
+						Random rand = new Random();
+						Player newIT = Game.players.get(rand.nextInt(Game.players.size())); // Get a random player
+						
+						newIT.getInventory().clear();
+						newIT.getInventory().setContents(Game.isIT.getInventory().getContents());
+						
+						Game.isIT = newIT; // Set the new IT
 
-			}
-			if (!KnockBackTag.getInstance().getConfig().getBoolean("ExitLocationSet")) {
-				player.sendMessage(Utils.ChatColor("&7[&cERROR&7] &cThe ExitLocation has not been set!"));
-			} else {
-				if (Game.isIT == player) {
-					// Handles if player is it when leaving
-					Game.KBTStat2Runnable.cancel();
+						Bukkit.getServer().broadcastMessage(Utils.ChatColor("&c&l" + player.getName()
+								+ " &e&lhas bailed out. &6&l" + newIT.getName() + " &eis now IT. Run Away!!"));
 
-					File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator + "userdata"
-							+ File.separator + player.getUniqueId().toString() + ".yml");
-					FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
+						// Handles if player is it when leaving
+						Game.KBTStat2Runnable.cancel();
 
-					userconfig.set("Stats.KBTStat4", userconfig.getInt("Stats.KBTStat4") + 1);
-					if (KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
-						player.sendMessage("KBTStat4 + 1");
+						File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator
+								+ "userdata" + File.separator + player.getUniqueId().toString() + ".yml");
+						FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
+
+						userconfig.set("Stats.KBTStat4", userconfig.getInt("Stats.KBTStat4") + 1);
+						if (KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
+							player.sendMessage("KBTStat4 + 1");
+						}
+						try {
+							userconfig.save(userdata);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						Bukkit.getServer().broadcastMessage(
+								Utils.ChatColor("&cThe last Tag player has left, There is nobody else playing Tag!"));
 					}
-					try {
-						userconfig.save(userdata);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
 				}
-				// Standard leave process
+				// Player is not it, regular leave process
 				Location exitLocation = new Location(
 						Bukkit.getServer().getWorld(
 								KnockBackTag.getInstance().getConfig().getString("ArenaLocation.ExitLocation.World")),
@@ -320,17 +327,15 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				Game.isIT = null;
-				return;
+			} else {
+				player.sendMessage(Utils.ChatColor("&cYou are not in the game!"));
 			}
-			return;
-		} else {
-			player.sendMessage(Utils.ChatColor("&cYou are not in the game!"));
-			return;
 		}
 	}
 
 	public static void EnterGame(Player player) {
+		System.out.println(Game.isIT);
+		System.out.println(Game.players);
 		if (!KnockBackTag.getInstance().getConfig().getBoolean("ArenaCoordinate1Set")
 				&& (!KnockBackTag.getInstance().getConfig().getBoolean("ArenaCoordinate2Set"))
 				&& (!KnockBackTag.getInstance().getConfig().getBoolean("ExitLocationSet"))) {
