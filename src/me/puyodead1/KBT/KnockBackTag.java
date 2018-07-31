@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,14 +49,14 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	public void onEnable() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvents(new Events(), this);
-		
+
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		File userdatadir = new File(getDataFolder() + File.separator + "userdata");
 		if (!userdatadir.exists()) {
 			System.out.println("userdata directory doesn't exist, it will be created.");
 			userdatadir.mkdirs();
-			
+
 		}
 		if (!new AdvancedLicense(getConfig().getString("LicenseKey"),
 				"http://licenceserverpuyodead1.000webhostapp.com/verify.php", this)
@@ -132,6 +133,75 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 						player.sendMessage(Utils.ChatColor("&eExit Location Set!"));
 						return true;
 					}
+				} else if (args.length == 2) {
+					if (args[2].equalsIgnoreCase("EnterGame")) {
+						ArrayList<String> onlinePlayers = new ArrayList<String>();
+						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+							onlinePlayers.add(p.getName());
+						}
+						if (onlinePlayers.contains(args[1])) {
+							Player p1 = Bukkit.getServer().getPlayer(args[1]);
+							EnterGame(p1);
+							sender.sendMessage(Utils.ChatColor("&eYou have forced &e&l" + args[1] + " &eto join the game!"));
+							return true;
+						} else {
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1] + " &c is either not a valid player or is not online!"));
+							return true;
+						}
+					}
+					if (args[2].equalsIgnoreCase("LeaveGame")) {
+						ArrayList<String> onlinePlayers = new ArrayList<String>();
+						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+							onlinePlayers.add(p.getName());
+						}
+						if (onlinePlayers.contains(args[1])) {
+							Player p1 = Bukkit.getServer().getPlayer(args[1]);
+							if (Game.players.contains(p1)) {
+								LeaveGame(p1);
+								sender.sendMessage(Utils.ChatColor("&eYou have kicked &e&l" + p1.getName() + " &efrom the game!"));
+								return true;
+							}
+							return true;
+						} else {
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1] + " &c is either not online or is not a valid player!"));
+							return true;
+						}
+					}
+					if (args[2].equalsIgnoreCase("isIT")) {
+						ArrayList<String> onlinePlayers = new ArrayList<String>();
+						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+							onlinePlayers.add(p.getName());
+						}
+						if (onlinePlayers.contains(args[1])) {
+							Player p1 = Bukkit.getServer().getPlayer(args[1]);
+							if (Game.players.contains(p1)) {
+								if (Game.isIT != p1) {
+									Game.isIT = p1;
+
+									Game.isIT.getInventory().clear();
+
+									Game.isIT.getInventory().setItem(0, Game.KnockBackStick());
+									Game.isIT.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+									Game.isIT.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+									Game.isIT.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+									Game.isIT.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+									
+									for(Player players : Game.players) {
+										players.sendMessage(Utils.ChatColor("&7***&e" + Game.isIT.getName() + " is IT! Avoid Them!&7***"));
+									}
+									
+								}
+							} else {
+								sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + p1.getName() + " &c is not playing Tag!"));
+								return true;
+							}
+						} else {
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1] + " &c is either not a valid player or is not online!"));
+							return true;
+						}
+					} else {
+						return false;
+					}
 				}
 			}
 		} else {
@@ -192,13 +262,14 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 			if (Game.players.size() != 0) {
 				Random rand = new Random();
 				Player newIT = Game.players.get(rand.nextInt(Game.players.size()));
-				Game.isIT = newIT;
 
-				if(Game.isIT == player) {
-					Bukkit.getServer().broadcastMessage(Utils.ChatColor(
-							"&c&l" + player.getName() + " &e&lhas bailed out. &6&l" + newIT.getName() + " &eis now IT. Run Away!!"));
+				if (Game.isIT == player) {
+					Game.isIT = newIT;
+					Bukkit.getServer().broadcastMessage(Utils.ChatColor("&c&l" + player.getName()
+							+ " &e&lhas bailed out. &6&l" + newIT.getName() + " &eis now IT. Run Away!!"));
 				} else {
-					Bukkit.getServer().broadcastMessage(Utils.ChatColor("&c" + player.getName() + " &eis no longer playing tag!"));
+					Bukkit.getServer().broadcastMessage(
+							Utils.ChatColor("&c" + player.getName() + " &eis no longer playing tag!"));
 				}
 			} else {
 				Bukkit.getServer().broadcastMessage(
@@ -217,7 +288,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 					FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
 
 					userconfig.set("Stats.KBTStat4", userconfig.getInt("Stats.KBTStat4") + 1);
-					if(KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
+					if (KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
 						player.sendMessage("KBTStat4 + 1");
 					}
 					try {
@@ -247,7 +318,6 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				try {
 					userconfig.save(userdata);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				Game.isIT = null;
@@ -281,10 +351,12 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				Game.players.add(player);
 
 				player.sendMessage(Utils.ChatColor("&eYou have been added to the Game!"));
-				if(Game.players.size() == 1) {
-					Bukkit.getServer().broadcastMessage(Utils.ChatColor("&6&l" + player.getName() + " &ehas started a game of Tag!"));
+				if (Game.players.size() == 1) {
+					Bukkit.getServer().broadcastMessage(
+							Utils.ChatColor("&6&l" + player.getName() + " &ehas started a game of Tag!"));
 				} else {
-					Bukkit.getServer().broadcastMessage(Utils.ChatColor("&6&l" + player.getName() + " &ehas joined Tag!"));
+					Bukkit.getServer()
+							.broadcastMessage(Utils.ChatColor("&6&l" + player.getName() + " &ehas joined Tag!"));
 				}
 				Location pos1 = new Location(
 						Bukkit.getServer()

@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -102,10 +103,18 @@ public class Events implements Listener {
 				Bukkit.getServer().broadcastMessage(Utils.ChatColor("&6&l" + d.getName() + " &ehas Tagged &6&l"
 						+ a.getName() + "&e. &6&l" + a.getName() + " &eis now IT, run for your lives!!"));
 				
-				a.setHealth(20.0);
 			} else {
 				return;
 			}
+			if(Game.players.contains(d) || Game.players.contains(a)) {
+				e.setCancelled(true);
+			}
+		}
+	}
+	@EventHandler
+	public void itemDrop(PlayerDropItemEvent e) {
+		if(Game.players.contains(e.getPlayer())) {
+			e.setCancelled(true);
 		}
 	}
 }
