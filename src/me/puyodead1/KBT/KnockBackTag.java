@@ -134,30 +134,30 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 						return true;
 					}
 				} else if (args.length == 2) {
-					if (args[2].equalsIgnoreCase("EnterGame")) {
+					if (args[1].equalsIgnoreCase("EnterGame")) {
 						ArrayList<String> onlinePlayers = new ArrayList<String>();
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 							onlinePlayers.add(p.getName());
 						}
-						if (onlinePlayers.contains(args[1])) {
-							Player p1 = Bukkit.getServer().getPlayer(args[1]);
+						if (onlinePlayers.contains(args[0])) {
+							Player p1 = Bukkit.getServer().getPlayer(args[0]);
 							EnterGame(p1);
 							sender.sendMessage(
-									Utils.ChatColor("&eYou have forced &e&l" + args[1] + " &eto join the game!"));
+									Utils.ChatColor("&eYou have forced &e&l" + args[0] + " &eto join the game!"));
 							return true;
 						} else {
-							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1]
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[0]
 									+ " &c is either not a valid player or is not online!"));
 							return true;
 						}
 					}
-					if (args[2].equalsIgnoreCase("LeaveGame")) {
+					if (args[1].equalsIgnoreCase("LeaveGame")) {
 						ArrayList<String> onlinePlayers = new ArrayList<String>();
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 							onlinePlayers.add(p.getName());
 						}
-						if (onlinePlayers.contains(args[1])) {
-							Player p1 = Bukkit.getServer().getPlayer(args[1]);
+						if (onlinePlayers.contains(args[0])) {
+							Player p1 = Bukkit.getServer().getPlayer(args[0]);
 							if (Game.players.contains(p1)) {
 								LeaveGame(p1);
 								sender.sendMessage(
@@ -166,18 +166,18 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 							}
 							return true;
 						} else {
-							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[1]
+							sender.sendMessage(Utils.ChatColor("&7[&cERROR&7] &7&l" + args[0]
 									+ " &c is either not online or is not a valid player!"));
 							return true;
 						}
 					}
-					if (args[2].equalsIgnoreCase("isIT")) {
+					if (args[1].equalsIgnoreCase("isIT")) {
 						ArrayList<String> onlinePlayers = new ArrayList<String>();
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 							onlinePlayers.add(p.getName());
 						}
-						if (onlinePlayers.contains(args[1])) {
-							Player p1 = Bukkit.getServer().getPlayer(args[1]);
+						if (onlinePlayers.contains(args[0])) {
+							Player p1 = Bukkit.getServer().getPlayer(args[0]);
 							if (Game.players.contains(p1)) {
 								if (Game.isIT != p1) {
 									Game.isIT = p1;
