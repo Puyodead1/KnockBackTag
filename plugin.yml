@@ -11,4 +11,4 @@ commands:
   Leave:
     description: Leave the Arena
   ExitCoordinate:
-    description: Set the Exit Location
+    description: Set the Exit Location3
