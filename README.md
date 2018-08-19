@@ -19,4 +19,4 @@ Compiled for Spigot 1.12.2
 
 - Plugin by Puyodead1 for MrBeason
 
-#Please see LICENSE.txt.
+#Please see LICENSE.txt
