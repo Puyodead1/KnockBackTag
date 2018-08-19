@@ -21,6 +21,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import me.puyodead1.KBT.KnockBackTag;
 import me.puyodead1.KBT.Game.Game;
+import me.puyodead1.KBT.Game.KBTStat2;
+import me.puyodead1.KBT.Game.KBTStat3;
 
 public class Events implements Listener {
 	FileConfiguration userconfig = null;
@@ -83,11 +85,11 @@ public class Events implements Listener {
 	@EventHandler
 	public void tagPlayer(EntityDamageByEntityEvent e) {
 		if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
-			Game.KBTStat2Runnable.cancel();
 			
 			Player d = (Player) e.getDamager();
 			Player a = (Player) e.getEntity();
-			Game.KBTStat2(a);
+			new KBTStat2(a);
+			new KBTStat3(d);
 			
 			if (d.getItemInHand().getItemMeta().getDisplayName().equals(Utils.ChatColor("&6Knock Back Stick"))
 					&& (d.getItemInHand().getType() == Material.STICK)) {

@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.puyodead1.KBT.AdvancedLicense.LogType;
 import me.puyodead1.KBT.Commands.ArenaCoords;
 import me.puyodead1.KBT.Game.Game;
+import me.puyodead1.KBT.Game.KBTStat1;
 import me.puyodead1.KBT.Utils.Events;
 import me.puyodead1.KBT.Utils.Utils;
 
@@ -285,7 +286,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 								+ " &e&lhas bailed out. &6&l" + newIT.getName() + " &eis now IT. Run Away!!"));
 
 						// Handles if player is it when leaving
-						Game.KBTStat2Runnable.cancel();
+						
 
 						File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator
 								+ "userdata" + File.separator + player.getUniqueId().toString() + ".yml");
@@ -316,17 +317,12 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 
 				player.getInventory().clear();
 				File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator + "userdata"
-						+ File.separator + player.getUniqueId().toString() + ".yml");
+						+ File.separator + player.getName().toString() + ".inv.tmp.yml");
 				FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
 
 				List<ItemStack> items = (List<ItemStack>) userconfig.getList("Inventory");
 				player.getInventory().setContents(items.toArray(new ItemStack[items.size()]));
-				userconfig.set("Inventory", null);
-				try {
-					userconfig.save(userdata);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				userdata.delete();
 			} else {
 				player.sendMessage(Utils.ChatColor("&cYou are not in the game!"));
 			}
@@ -334,8 +330,6 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	}
 
 	public static void EnterGame(Player player) {
-		System.out.println(Game.isIT);
-		System.out.println(Game.players);
 		if (!KnockBackTag.getInstance().getConfig().getBoolean("ArenaCoordinate1Set")
 				&& (!KnockBackTag.getInstance().getConfig().getBoolean("ArenaCoordinate2Set"))
 				&& (!KnockBackTag.getInstance().getConfig().getBoolean("ExitLocationSet"))) {
@@ -389,6 +383,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				if (KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
 					player.sendMessage("X: " + randomX + 0.5 + " Y: " + randomY + 0.5 + " Z: " + randomZ + 0.5);
 				}
+				new KBTStat1(player);
 				Game.gameInit(player);
 				return;
 			} else {
