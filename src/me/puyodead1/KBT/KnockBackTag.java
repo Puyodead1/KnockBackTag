@@ -385,6 +385,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				}
 				new KBTStat1(player);
 				Game.gameInit(player);
+				
 				return;
 			} else {
 				player.sendMessage(Utils.ChatColor("&cYou are already in the game!"));
