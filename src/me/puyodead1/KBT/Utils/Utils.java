@@ -9,6 +9,12 @@ public class Utils {
 	public static String ChatColor(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
+	public static String[] ChatColor(String[] array) {
+		for(int i = 0; i < array.length; i++) {
+			array[i] = ChatColor.translateAlternateColorCodes('&', array[i]);
+		}
+		return array;
+	}
 	public static boolean isWithinCuboid(Location loc, Location pos1, Location pos2) {
 		final Vector primVector = pos1.toVector(), secVector = pos2.toVector();
 		

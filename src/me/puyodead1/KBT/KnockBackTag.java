@@ -23,6 +23,7 @@ import me.puyodead1.KBT.AdvancedLicense.LogType;
 import me.puyodead1.KBT.Commands.ArenaCoords;
 import me.puyodead1.KBT.Game.Game;
 import me.puyodead1.KBT.Game.KBTStat1;
+import me.puyodead1.KBT.Game.StatsHologram;
 import me.puyodead1.KBT.Utils.Events;
 import me.puyodead1.KBT.Utils.Utils;
 
@@ -31,7 +32,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	private static KnockBackTag instance;
 	private Random r = new Random();
 	private LogType logType = LogType.NORMAL;
-
+	
 	public KnockBackTag() {
 		instance = this;
 	}
@@ -59,11 +60,11 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 			userdatadir.mkdirs();
 
 		}
-		if (!new AdvancedLicense(getConfig().getString("LicenseKey"),
+		/*if (!new AdvancedLicense(getConfig().getString("LicenseKey"),
 				"http://licenceserverpuyodead1.000webhostapp.com/verify.php", this)
 						.setSecurityKey("YecoF0I6M05thxLeokoHuW8iUhTdIUInjkfF").register()) {
 			return;
-		}
+		}*/
 	}
 
 	@Override
@@ -86,6 +87,14 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				if (args.length == 0) {
 					Help(player);
 				} else if (args.length == 1) {
+					if(args[0].equalsIgnoreCase("SetHologramLocation")) {
+						getConfig().set("HologramLocation.world", player.getLocation().getWorld().getName());
+						getConfig().set("HologramLocation.x", player.getLocation().getBlockX());
+						getConfig().set("HologramLocation.y", player.getLocation().getBlockY());
+						getConfig().set("HologramLocation.z", player.getLocation().getBlockZ());
+						saveConfig();
+						return true;
+					}
 					if (args[0].equalsIgnoreCase("ArenaCoordinate1")) {
 						if (getConfig().getBoolean("ArenaCoordinate1Set")) {
 							sender.sendMessage(
