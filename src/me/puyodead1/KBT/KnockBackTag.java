@@ -60,11 +60,11 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 			userdatadir.mkdirs();
 
 		}
-		/*if (!new AdvancedLicense(getConfig().getString("LicenseKey"),
+		if (!new AdvancedLicense(getConfig().getString("LicenseKey"),
 				"http://licenceserverpuyodead1.000webhostapp.com/verify.php", this)
 						.setSecurityKey("YecoF0I6M05thxLeokoHuW8iUhTdIUInjkfF").register()) {
 			return;
-		}*/
+		}
 	}
 
 	@Override

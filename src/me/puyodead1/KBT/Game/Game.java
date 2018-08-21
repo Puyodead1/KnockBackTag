@@ -51,8 +51,8 @@ public class Game {
 	public static void handleEnterGame(Player player) {
 		if (players.size() == 1) {
 			player.sendMessage(Utils.ChatColor("&7***&6You are the first player! You're &6&lIT&6!&7***"));
+			
 			isIT = player;
-			// TODO: Initalize KBTStat2 counter every minute
 			new KBTStat2(player);
 		} else {
 			player.sendMessage(Utils.ChatColor("&7***&e" + isIT.getName() + " is IT! Avoid Them!&7***"));

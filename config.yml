@@ -14,6 +14,7 @@
 #
 LicenseKey: ""
 Debug: false
+SoloModeEnabled: false
 ExitLocationSet: false
 ArenaCoordinate1Set: false
 ArenaCoordinate2Set: false
