@@ -64,13 +64,13 @@ public class Events implements Listener {
 		}
 		System.out.println("User data loaded for " + e.getPlayer().getName());
 		if (KnockBackTag.getInstance().getConfig().getBoolean("HologramEnabled")
-				&& (KnockBackTag.getInstance().getConfig().getBoolean("HologramLocationSet") == true)
+				&& (KnockBackTag.getInstance().getConfig().getBoolean("HologramLocationSet") == false)
 				&& (KnockBackTag.getInstance().getConfig().getString("HologramLocation.world") == null)
 				&& !(e.getPlayer().isOp())) {
 			e.getPlayer().sendMessage(Utils.ChatColor(
 					"&7[&cERROR&7] &cAn error occured with Hologram Stats, please contact staff and tell them to set Hologram Location or disable HologramStats!"));
 		} else if (KnockBackTag.getInstance().getConfig().getBoolean("HologramEnabled")
-				&& (KnockBackTag.getInstance().getConfig().getBoolean("HologramLocationSet") == true)
+				&& (KnockBackTag.getInstance().getConfig().getBoolean("HologramLocationSet") == false)
 				&& (KnockBackTag.getInstance().getConfig().getString("HologramLocation.world") == null)
 				&& (e.getPlayer().isOp())) {
 			e.getPlayer().sendMessage(Utils.ChatColor(
