@@ -295,7 +295,6 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 								+ " &e&lhas bailed out. &6&l" + newIT.getName() + " &eis now IT. Run Away!!"));
 
 						// Handles if player is it when leaving
-						
 
 						File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator
 								+ "userdata" + File.separator + player.getUniqueId().toString() + ".yml");
@@ -313,6 +312,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 					} else {
 						Bukkit.getServer().broadcastMessage(
 								Utils.ChatColor("&cThe last Tag player has left, There is nobody else playing Tag!"));
+						Game.isIT = null;
 					}
 				}
 				// Player is not it, regular leave process
