@@ -24,6 +24,7 @@ import me.puyodead1.KBT.KnockBackTag;
 import me.puyodead1.KBT.Game.Game;
 import me.puyodead1.KBT.Game.KBTStat2;
 import me.puyodead1.KBT.Game.KBTStat3;
+import me.puyodead1.KBT.Game.ParticleManager;
 import me.puyodead1.KBT.Game.StatsHologram;
 
 public class Events implements Listener {
@@ -109,11 +110,12 @@ public class Events implements Listener {
 			Player a = (Player) e.getEntity();
 			new KBTStat2(a);
 			new KBTStat3(d);
-
+			
 			if (d.getItemInHand().getItemMeta().getDisplayName().equals(Utils.ChatColor("&6Knock Back Stick"))
 					&& (d.getItemInHand().getType() == Material.STICK)) {
 				d.sendMessage(Utils.ChatColor("&eYou Tagged " + a.getName()));
 				Game.isIT = a;
+				new ParticleManager(a);
 
 				a.getInventory().clear();
 				a.getInventory().setContents(d.getInventory().getContents());

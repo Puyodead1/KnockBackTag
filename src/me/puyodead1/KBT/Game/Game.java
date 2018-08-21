@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -53,6 +55,8 @@ public class Game {
 			player.sendMessage(Utils.ChatColor("&7***&6You are the first player! You're &6&lIT&6!&7***"));
 			
 			isIT = player;
+			
+			new ParticleManager(player);
 			new KBTStat2(player);
 		} else {
 			player.sendMessage(Utils.ChatColor("&7***&e" + isIT.getName() + " is IT! Avoid Them!&7***"));
