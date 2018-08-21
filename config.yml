@@ -2,8 +2,12 @@
 # 
 # Change LicenseKey to the license key provided
 # The Debug switch sends debug messages to all players (some)
+# ParticlesEnabled controls particles on IT
+# StatsEnabled: If set to false, stats system will be turned off
+# HologramEnabled: If set to false, holograms will not be shown to players when they join, 
+# if you set this to true, you MUST set the hologram location!
 # 
-# DO NOT CHANGE ExitLocationSet, ArenaCoordinate1Set, or ArenaCoordinate2Set!
+# DO NOT CHANGE ExitLocationSet, ArenaCoordinate1Set, ArenaCoordinate2Set, or HologramLocationSet!
 # 
 # The StatsHologram area is for customization of the hologram, you can add as many lines as you want with color support! 
 # Valid placeholders for the hologram are: {PLAYER_NAME}, {KBTSTAT_1}, {KBTSTAT_2}, {KBTSTAT_3}, {KBTSTAT_4}
@@ -14,10 +18,13 @@
 #
 LicenseKey: ""
 Debug: false
-SoloModeEnabled: false
+ParticlesEnabled: false
+StatsEnabled: true
+HologramEnabled: false
 ExitLocationSet: false
 ArenaCoordinate1Set: false
 ArenaCoordinate2Set: false
+HologramLocationSet: false
 
 StatsHologram:
   - "&7*** &6&lStats &7***"

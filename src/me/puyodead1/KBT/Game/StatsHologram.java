@@ -17,48 +17,6 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntityLiving;
 @SuppressWarnings("deprecation")
 public class StatsHologram {
 
-	/*public static Hologram hologram1;
-	
-	public HolographicDisplaysAPI hologram = new HolographicDisplaysAPI();
-
-	public static void CreateHologram(Player player) {
-		List<String> cnfg = KnockBackTag.getInstance().getConfig().getStringList("StatsHologram");
-		
-		File userdata = new File(KnockBackTag.getInstance().getDataFolder() + File.separator + "userdata"
-				+ File.separator + player.getUniqueId().toString() + ".yml");
-		FileConfiguration userconfig = YamlConfiguration.loadConfiguration(userdata);
-		
-		KnockBackTag kbt = KnockBackTag.getInstance();
-		String[] array = KnockBackTag.getInstance().getConfig().getStringList("StatsHologram").toArray(new String[0]);
-		for(int i = 0; i < array.length; i++) {
-			array[i] = array[i].replace("{PLAYER_NAME}", player.getName());
-			array[i] = array[i].replace("{KBTSTAT_1}", ""+Config.getPlayerConfig(player).getInt("Stats.KBTStat1"));
-			array[i] = array[i].replace("{KBTSTAT_2}", ""+Config.getPlayerConfig(player).getInt("Stats.KBTStat2"));
-			array[i] = array[i].replace("{KBTSTAT_3}", ""+Config.getPlayerConfig(player).getInt("Stats.KBTStat3"));
-			array[i] = array[i].replace("{KBTSTAT_4}", ""+Config.getPlayerConfig(player).getInt("Stats.KBTStat4"));
-		}
-		hologram1 = HolographicDisplaysAPI.createIndividualHologram(
-				KnockBackTag.getInstance(),
-				player.getLocation().add(0, 2, 0),
-				player,
-				Utils.ChatColor(array)
-				);
-		player.sendMessage("Created Hologram at current location!");
-	}
-	public static void DeleteHologram(Player player) {
-		hologram1.delete();
-		player.sendMessage("Deleted");
-	}*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	private List<EntityArmorStand> entitylist = new ArrayList<EntityArmorStand>();
     private String[] Text;
     private Location location;

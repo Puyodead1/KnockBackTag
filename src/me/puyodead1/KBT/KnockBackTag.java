@@ -32,7 +32,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 	private static KnockBackTag instance;
 	private Random r = new Random();
 	private LogType logType = LogType.NORMAL;
-	
+
 	public KnockBackTag() {
 		instance = this;
 	}
@@ -87,7 +87,7 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				if (args.length == 0) {
 					Help(player);
 				} else if (args.length == 1) {
-					if(args[0].equalsIgnoreCase("SetHologramLocation")) {
+					if (args[0].equalsIgnoreCase("SetHologramLocation")) {
 						getConfig().set("HologramLocation.world", player.getLocation().getWorld().getName());
 						getConfig().set("HologramLocation.x", player.getLocation().getBlockX());
 						getConfig().set("HologramLocation.y", player.getLocation().getBlockY());
@@ -285,10 +285,10 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 					if (Game.players.size() > 0) { // If there are more then 0 players, get a new IT
 						Random rand = new Random();
 						Player newIT = Game.players.get(rand.nextInt(Game.players.size())); // Get a random player
-						
+
 						newIT.getInventory().clear();
 						newIT.getInventory().setContents(Game.isIT.getInventory().getContents());
-						
+
 						Game.isIT = newIT; // Set the new IT
 
 						Bukkit.getServer().broadcastMessage(Utils.ChatColor("&c&l" + player.getName()
@@ -392,7 +392,9 @@ public class KnockBackTag extends JavaPlugin implements CommandExecutor {
 				if (KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
 					player.sendMessage("X: " + randomX + 0.5 + " Y: " + randomY + 0.5 + " Z: " + randomZ + 0.5);
 				}
-				new KBTStat1(player);
+				if (KnockBackTag.getInstance().getConfig().getBoolean("StatsEnabled")) {
+					new KBTStat1(player);
+				}
 				Game.gameInit(player);
 				return;
 			} else {

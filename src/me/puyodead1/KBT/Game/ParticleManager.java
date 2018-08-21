@@ -1,6 +1,5 @@
 package me.puyodead1.KBT.Game;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

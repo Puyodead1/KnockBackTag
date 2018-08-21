@@ -50,6 +50,8 @@ public class KBTStat2 {
 					if(KnockBackTag.getInstance().getConfig().getBoolean("Debug")) {
 						player.sendMessage("KBTStat2 + 1");
 					}
+				} else {
+					this.cancel();
 				}
 			}
 		}.runTaskTimerAsynchronously(KnockBackTag.getInstance(), 1200L, 1200L);

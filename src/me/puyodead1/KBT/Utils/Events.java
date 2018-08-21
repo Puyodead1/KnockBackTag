@@ -63,23 +63,44 @@ public class Events implements Listener {
 			}
 		}
 		System.out.println("User data loaded for " + e.getPlayer().getName());
-
-		// Hologram
-		Player player = e.getPlayer();
-		KnockBackTag kbt = KnockBackTag.getInstance();
-		Location location = new Location(kbt.getServer().getWorld(kbt.getConfig().getString("HologramLocation.world")),
-				kbt.getConfig().getDouble("HologramLocation.x"), kbt.getConfig().getDouble("HologramLocation.y"),
-				kbt.getConfig().getDouble("HologramLocation.z"));
-		String[] array = KnockBackTag.getInstance().getConfig().getStringList("StatsHologram").toArray(new String[0]);
-		for (int i = 0; i < array.length; i++) {
-			array[i] = array[i].replace("{PLAYER_NAME}", player.getName());
-			array[i] = array[i].replace("{KBTSTAT_1}", "" + Config.getPlayerConfig(player).getInt("Stats.KBTStat1"));
-			array[i] = array[i].replace("{KBTSTAT_2}", "" + Config.getPlayerConfig(player).getInt("Stats.KBTStat2"));
-			array[i] = array[i].replace("{KBTSTAT_3}", "" + Config.getPlayerConfig(player).getInt("Stats.KBTStat3"));
-			array[i] = array[i].replace("{KBTSTAT_4}", "" + Config.getPlayerConfig(player).getInt("Stats.KBTStat4"));
+		if (KnockBackTag.getInstance().getConfig().getBoolean("HologramEnabled")
+				&& (KnockBackTag.getInstance().getConfig().getBoolean("HologramLocationSet") == true)
+				&& (KnockBackTag.getInstance().getConfig().getString("HologramLocation.world") == null)
+				&& !(e.getPlayer().isOp())) {
+			e.getPlayer().sendMessage(Utils.ChatColor(
+					"&7[&cERROR&7] &cAn error occured with Hologram Stats, please contact staff and tell them to set Hologram Location or disable HologramStats!"));
+		} else if (KnockBackTag.getInstance().getConfig().getBoolean("HologramEnabled")
+				&& (KnockBackTag.getInstance().getConfig().getBoolean("HologramLocationSet") == true)
+				&& (KnockBackTag.getInstance().getConfig().getString("HologramLocation.world") == null)
+				&& (e.getPlayer().isOp())) {
+			e.getPlayer().sendMessage(Utils.ChatColor(
+					"&7[&cERROR&7] &cHologram Stats have been enabled but the Hologram Location is not set! Please set it or disable it in the config!"));
 		}
-		StatsHologram holo = new StatsHologram(Utils.ChatColor(array), location);
-		holo.showPlayer(player);
+
+		if (KnockBackTag.getInstance().getConfig().getBoolean("HologramEnabled")) {
+			// Hologram
+			Player player = e.getPlayer();
+			KnockBackTag kbt = KnockBackTag.getInstance();
+			Location location = new Location(
+					kbt.getServer().getWorld(kbt.getConfig().getString("HologramLocation.world")),
+					kbt.getConfig().getDouble("HologramLocation.x"), kbt.getConfig().getDouble("HologramLocation.y"),
+					kbt.getConfig().getDouble("HologramLocation.z"));
+			String[] array = KnockBackTag.getInstance().getConfig().getStringList("StatsHologram")
+					.toArray(new String[0]);
+			for (int i = 0; i < array.length; i++) {
+				array[i] = array[i].replace("{PLAYER_NAME}", player.getName());
+				array[i] = array[i].replace("{KBTSTAT_1}",
+						"" + Config.getPlayerConfig(player).getInt("Stats.KBTStat1"));
+				array[i] = array[i].replace("{KBTSTAT_2}",
+						"" + Config.getPlayerConfig(player).getInt("Stats.KBTStat2"));
+				array[i] = array[i].replace("{KBTSTAT_3}",
+						"" + Config.getPlayerConfig(player).getInt("Stats.KBTStat3"));
+				array[i] = array[i].replace("{KBTSTAT_4}",
+						"" + Config.getPlayerConfig(player).getInt("Stats.KBTStat4"));
+			}
+			StatsHologram holo = new StatsHologram(Utils.ChatColor(array), location);
+			holo.showPlayer(player);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -108,14 +129,18 @@ public class Events implements Listener {
 
 			Player d = (Player) e.getDamager();
 			Player a = (Player) e.getEntity();
-			new KBTStat2(a);
-			new KBTStat3(d);
-			
+			if (KnockBackTag.getInstance().getConfig().getBoolean("StatsEnabled")) {
+				new KBTStat2(a);
+				new KBTStat3(d);
+			}
+
 			if (d.getItemInHand().getItemMeta().getDisplayName().equals(Utils.ChatColor("&6Knock Back Stick"))
 					&& (d.getItemInHand().getType() == Material.STICK)) {
 				d.sendMessage(Utils.ChatColor("&eYou Tagged " + a.getName()));
 				Game.isIT = a;
-				new ParticleManager(a);
+				if (KnockBackTag.getInstance().getConfig().getBoolean("ParticlesEnabled")) {
+					new ParticleManager(a);
+				}
 
 				a.getInventory().clear();
 				a.getInventory().setContents(d.getInventory().getContents());

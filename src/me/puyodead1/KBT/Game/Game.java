@@ -25,7 +25,6 @@ public class Game {
 	public static Player isIT;
 	public static int KBTStat2 = 0;
 
-
 	public static ItemStack NetherStar() {
 		ItemStack item = new ItemStack(Material.NETHER_STAR);
 		ItemMeta meta = item.getItemMeta();
@@ -53,14 +52,20 @@ public class Game {
 	public static void handleEnterGame(Player player) {
 		if (players.size() == 1) {
 			player.sendMessage(Utils.ChatColor("&7***&6You are the first player! You're &6&lIT&6!&7***"));
-			
+
 			isIT = player;
-			
-			new ParticleManager(player);
-			new KBTStat2(player);
+
+			if (KnockBackTag.getInstance().getConfig().getBoolean("ParticlesEnabled")) {
+				new ParticleManager(player);
+			}
+			if (KnockBackTag.getInstance().getConfig().getBoolean("StatsEnabled")) {
+				new KBTStat2(player);
+			}
 		} else {
 			player.sendMessage(Utils.ChatColor("&7***&e" + isIT.getName() + " is IT! Avoid Them!&7***"));
-			new KBTStat3(player);
+			if (KnockBackTag.getInstance().getConfig().getBoolean("StatsEnabled")) {
+				new KBTStat3(player);
+			}
 		}
 	}
 
