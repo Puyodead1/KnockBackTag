@@ -1,6 +1,6 @@
-# KnockBackTag
+# KnockBackTag (migrated from BitBucket to GitHub on 11/11/2019)
 
-### This is a BETA, it is not production ready, it is for the purpose of testing!
+### This is a BETA
 
 Compiled for Spigot 1.12.2
 
